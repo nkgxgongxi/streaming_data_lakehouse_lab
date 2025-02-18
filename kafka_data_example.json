@@ -1,0 +1,31 @@
+{
+    "schema": {
+        "type": "struct",
+        "fields": [
+            {
+                "type": "int32",
+                "optional": false,
+                "field": "id"
+            },
+            {
+                "type": "string",
+                "optional": true,
+                "field": "description"
+            },
+            {
+                "type": "int64",
+                "optional": false,
+                "name": "org.apache.kafka.connect.data.Timestamp",
+                "version": 1,
+                "field": "updated_date"
+            }
+        ],
+        "optional": false,
+        "name": "kafka_source_test_data"
+    },
+    "payload": {
+        "id": 1,
+        "description": "test_rec1",
+        "updated_date": 1739810223909
+    }
+}
