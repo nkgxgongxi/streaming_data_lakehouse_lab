@@ -102,6 +102,10 @@ resource "aws_instance" "kafka_ec2" {
 
   user_data = <<-EOF
               #!/bin/bash
+              # First ensure the timezone of the machine is the desired one (or aligned with RDS database).
+              sudo timedatectl set-timezone "Australia/Sydney"
+
+              # Install java jdk
               sudo yum update -y
               sudo yum install -y java-11-amazon-corretto wget
 
@@ -113,6 +117,12 @@ resource "aws_instance" "kafka_ec2" {
               cd /opt/kafka
               wget https://downloads.apache.org/kafka/3.7.2/kafka_2.13-3.7.2.tgz
               tar -xvzf kafka_2.13-3.7.2.tgz --strip 1
+
+              export KAFKA_HOME=/opt/kafka
+              export PATH=$PATH:$KAFKA_HOME/bin
+              export JAVA_HOME=/usr/lib/jvm/java-23-openjdk
+              export PATH=$PATH:$JAVA_HOME/bin
+              source ~/.bashrc
 
               # Give EC2 User Permissions to Kafka Logs
               sudo mkdir -p /var/log/kafka
@@ -132,14 +142,21 @@ resource "aws_instance" "kafka_ec2" {
               tar -xvzf confluent-7.8.0.tar.gz
               mv confluent-7.8.0 /opt/kafka-connect/confluent
               
-              # Start Kafka Connect
-              sudo -u ec2-user nohup /opt/kafka-connect/confluent/bin/connect-distributed /opt/kafka/config/connect-distributed.properties > /var/log/kafka/kafka-connect.log 2>&1 &
-              
-              # Install JDBC Source Connector
+              # Install JDBC Source Connector and PostgreSQL JDBC driver
               sudo mkdir -p /opt/kafka-connect/plugins
               sudo chown -R ec2-user:ec2-user /opt/kafka-connect/plugins
               cd /opt/kafka-connect/plugins
-              wget https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/10.4.0/kafka-connect-jdbc-10.4.0.jar
+              wget https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/10.8.0/kafka-connect-jdbc-10.8.0.jar
+              wget https://jdbc.postgresql.org/download/postgresql-42.7.4.jar
+              sudo chmod +rx kafka-connect-jdbc-10.8.0.jar
+              sudo chmod +rx postgresql-42.7.4.jar
+
+              # Update kafka-connect configuration
+              echo "plugin.path=/opt/kafka-connect" >> /opt/kafka/config/connect-distributed.properties
+              export CLASSPATH="/opt/kafka-connect/plugins/postgresql-42.7.4.jar:$CLASSPATH"
+
+              # Start Kafka Connect
+              sudo -u ec2-user nohup /opt/kafka-connect/confluent/bin/connect-distributed /opt/kafka/config/connect-distributed.properties > /var/log/kafka/kafka-connect.log 2>&1 &
               
               EOF
 

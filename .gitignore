@@ -3,3 +3,4 @@ postgres-jdbc-source.json
 LICENSE.txt
 *.hcl
 *.exe
+*.tfstate.backup
