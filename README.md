@@ -5,6 +5,7 @@ Author: Xi Gong
 Last updated at: 2025-02-18
 
 ### Project Summary
+
 This is one of my practice projects aiming to setup a Data Lakehouse on AWS infrastructure. 
 In this project, I have experimented with the following techniques. 
 1. Use Kafka Connect (JDBC Source Connector) to digest data in a streaming fashion. Even though my source data are from AWS RDS PostgreSQL database, I am using this configuration to understand how Kafka processes data.
