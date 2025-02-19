@@ -4,7 +4,7 @@ Author: Xi Gong
 
 Last updated at: 2025-02-18
 
-### Project Summary
+## Project Summary
 
 This is one of my practice projects aiming to setup a Data Lakehouse on AWS infrastructure. 
 In this project, I have experimented with the following techniques. 
