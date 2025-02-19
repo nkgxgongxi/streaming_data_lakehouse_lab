@@ -23,25 +23,6 @@ curl -X GET http://localhost:8083/connectors/postgres-jdbc-source/config
 # Set JDBC Source Connector config
 curl -X POST -H "Content-Type: application/json" --data @/opt/kafka-connect/postgres-jdbc-source.json http://localhost:8083/connectors
 
-
-{
-  "name": "postgres-jdbc-source",
-  "config": {
-	{
-  		"connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
-  		"connection.url": "jdbc:postgresql://sc-database.c3ck6e4gewed.ap-southeast-2.rds.amazonaws.com:5432/sc_jdbc_db",
-  		"connection.user": "postgres_admin",
-  		"connection.password": "RDS-postgres-123",
-  		"plugin.path": "/opt/kafka-connect/plugins",
-  		"table.whitelist": "sc_dev.kafka_source_test_data",
-  		"mode": "timestamp",
-  		"timestamp.column.name": "updated_date",
-  		"topic.prefix": "postgres-",
-  		"poll.interval.ms": 10000
-	}
-}
-
-
 curl -X PUT -H "Content-Type: application/json"  --data @postgres-jdbc-source.json http://localhost:8083/connectors/postgres-jdbc-source/config
 
 
