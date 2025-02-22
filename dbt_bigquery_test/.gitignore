@@ -1,1 +1,4 @@
-dbt-user-creds.json
+
+target/
+dbt_packages/
+logs/
