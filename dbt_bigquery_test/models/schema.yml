@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: customers
+    description: ""
+    columns:
+      - name: customer_id
+        data_type: int64
+        description: ""
+
+      - name: first_name
+        data_type: string
+        description: ""
+
+      - name: last_name
+        data_type: string
+        description: ""
+
+      - name: first_order_date
+        data_type: date
+        description: ""
+
+      - name: most_recent_order_date
+        data_type: date
+        description: ""
+
+      - name: number_of_orders
+        data_type: int64
+        description: ""
