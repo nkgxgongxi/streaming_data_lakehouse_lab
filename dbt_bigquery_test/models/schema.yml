@@ -6,7 +6,13 @@ models:
     columns:
       - name: customer_id
         data_type: int64
-        description: ""
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      # added in documentation step, to test that we can add content.
+      - name: first_order_date
+        description: NULL when a customer has not yet placed an order.
 
       - name: first_name
         data_type: string
@@ -27,3 +33,31 @@ models:
       - name: number_of_orders
         data_type: int64
         description: ""
+
+  - name: stg_customers
+    description: This model cleans up customer data
+    columns:
+      - name: customer_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: This model cleans up order data
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
