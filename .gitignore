@@ -4,3 +4,4 @@ LICENSE.txt
 *.hcl
 *.exe
 *.tfstate.backup
+dbt-gcp-user-creds.json
