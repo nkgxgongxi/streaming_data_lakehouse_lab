@@ -3,26 +3,17 @@
 -- Trying to create view `dbt-bigquery-test1-451708`.`jaffle_shop`.`customers`, but it currently exists as a table. Either drop `dbt-bigquery-test1-451708`.`jaffle_shop`.`customers` manually, or run dbt with `--full-refresh` and dbt will drop it for you.
 -- By adding --full-refresh, I was able to overwrite the table by this view.
 
+-- further tried following instruction to override the target to view instead of table for this model.
+
 with customers as (
 
-    select
-        id as customer_id,
-        first_name,
-        last_name
-
-    from `dbt-tutorial`.jaffle_shop.customers
+    select * from {{ref('stg_customers')}}
 
 ),
 
 orders as (
 
-    select
-        id as order_id,
-        user_id as customer_id,
-        order_date,
-        status
-
-    from `dbt-tutorial`.jaffle_shop.orders
+    select * from {{ref('stg_orders')}}
 
 ),
 
