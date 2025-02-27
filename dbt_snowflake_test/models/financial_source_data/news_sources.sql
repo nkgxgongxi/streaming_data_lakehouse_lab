@@ -5,7 +5,7 @@ with external_news_sources as (
 
 final as (
 
-    select * from external_news_sources
+    select s.*, CURRENT_TIMESTAMP(2) as last_updated_at from external_news_sources s
 )
 
 select * from final
