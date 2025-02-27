@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: news_sources
+    description: "Load News Sources data from an external database."
+    columns:
+      - name: id
+        description: "The api record key for each row."
+        data_tests:
+          - unique
+          - not_null
+      - name: name
+        description: "News Source Name."
+        data_tests:
+          - not_null
+      - name: description
+        description: "Description of this news source."
+      - name: url
+        description: "URL of the source."
+      - name: category
+        description: "What type of news source it is."
+      - name: language
+        description: "Language of this news source."
+      - name: country
+        description: "Country of this news source."
+
+sources:
+  - name: jaffle_shop
+    database: raw  
+    schema: jaffle_shop  
+    tables:
+      - name: orders
+      - name: customers
+
+  - name: news_api_temp_source
+    description: 'An external source of data created by myself.'
+    database: hol_db
+    schema: public
+    tables:
+      - name: news_sources
+        description: 'This is a raw table of News Sources I initially loaded into a temporary database and schema.'

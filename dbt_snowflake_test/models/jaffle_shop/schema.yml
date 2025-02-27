@@ -19,3 +19,12 @@ models:
         data_tests:
           - unique
           - not_null
+
+  - name: my_third_dbt_model
+    description: "My own dbt model test. Trying to see whether the target name is the model name."
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
