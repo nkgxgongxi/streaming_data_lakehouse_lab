@@ -1,20 +1,12 @@
-import configparser
-import os
 import pandas as pd
 import snowflake.connector
 
+from retrieve_config import retrieve_config_info
 
-# Get the absolute path of the directory where the script is located
-script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Construct the full path to config.ini
-config_path = os.path.join(script_dir, "config.ini")
-
-# Load the configuration file
-config = configparser.ConfigParser()
-config.read(config_path)
 
 # Read Snowflake configuration information
+config = retrieve_config_info("config.ini")
 snowflake_config = config['snowflake']
 
 
