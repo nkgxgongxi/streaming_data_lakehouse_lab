@@ -31,9 +31,11 @@ def get_news_data(sources:list, start_date:str, end_date:str, topic:str):
     else:
         source_str = ','.join(sources)
     
+    print(source_str)
+    
     all_articles = newsapi.get_everything(q=topic,
                                             sources=source_str,
-                                            from_param='2025-02-01',
+                                            from_param='2025-02-11',
                                             to='2025-03-01',
                                             language='en',
                                             sort_by='relevancy',
@@ -70,7 +72,7 @@ if __name__ == '__main__':
     #                        created_table_columns=table_columns
     #                        )
 
-    get_news_data(sources='bloomberg', topic='nvidia')
+    get_news_data(sources=['bloomberg'], topic='trump', start_date='', end_date='')
 
 
 
