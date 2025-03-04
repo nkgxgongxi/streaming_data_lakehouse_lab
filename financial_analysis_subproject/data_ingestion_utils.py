@@ -65,6 +65,7 @@ class Snowflake_Ops():
             dtypes = df.dtypes  # Get data types
             # TODO: It seems like most of the data types are object, so they are mapped into String. How can I make this mapping smarter?
             # print(dtypes)
+            
             # Map Pandas data types to Snowflake data types
             type_mapping = {
                 "object": "STRING",
@@ -74,28 +75,28 @@ class Snowflake_Ops():
                 "datetime64[us]": "TIMESTAMP"
             }
 
-            # Generate the CREATE TABLE query dynamically
+            # Use the columns from dataframe to create a list of <Column Name, Column Type> strings
             table_columns_with_type = []
             for col in df_columns:
                 snowflake_type = type_mapping.get(str(dtypes[col]), "STRING")  # Default to STRING if type is not mapped
                 table_columns_with_type.append(f"{col.upper()} {snowflake_type}")
 
-            # print(table_columns_with_type)
-
+            # Generate the CREATE TABLE query dynamically
             create_table_query = """CREATE TABLE IF NOT EXISTS {table_name} ({table_columns});""".format(
                 table_name=table_name, 
                 table_columns=','.join(table_columns_with_type)
             )
         
-            # print(create_table_query)
             cursor.execute(create_table_query)
 
-        
+        # When applying overwrite mode, delete all the existing records.
         if mode == 'overwrite':
             delete_records_query = """TRUNCATE TABLE {0}""".format(table_name)
             cursor.execute(delete_records_query)
         
+        # Normalise the data format of last updated at field
         df['LAST_UPDATED_AT'] = df['LAST_UPDATED_AT'].dt.strftime('%Y-%m-%dT%H:%M:%S')
+        
         # Load the DataFrame into Snowflake
         success, nchunks, nrows, _ = write_pandas(
             conn=conn,
