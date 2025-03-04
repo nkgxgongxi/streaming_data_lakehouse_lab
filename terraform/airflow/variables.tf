@@ -16,13 +16,13 @@ variable "security_group_id" {
 variable "instance_type" {
   description = "EC2 instance type for Airflow"
   type        = string
-  default     = "t2.medium"
+  default     = "t2.micro"
 }
 
 variable "ami_id" {
   description = "AMI ID for the Airflow instance"
   type        = string
-  default     = "ami-0523420044a1cd2b1"
+  default     = "ami-064b71eca68aadfb8"
 }
 
 variable "key_name" {

@@ -8,20 +8,27 @@ data "aws_subnet" "existing" {
 
 resource "aws_instance" "airflow" {
   ami                    = "ami-064b71eca68aadfb8"
-  instance_type          = "t2.medium"
+  instance_type          = "t2.micro"
   subnet_id              = data.aws_subnet.existing.id
   vpc_security_group_ids = [var.security_group_id]
   key_name               = "kafka-ec2-key"
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   user_data = <<-EOF
               #!/bin/bash
-              sudo apt update -y
-              sudo apt install -y python3-pip python3-venv
+              sudo yum update -y
+              sudo yum install -y python3-pip
+              sudo mkdir -p /opt/airflow_dir
+              sudo chown -R ec2-user:ec2-user /opt/airflow_dir
+              cd /opt/airflow_dir
               python3 -m venv airflow-venv
               source airflow-venv/bin/activate
               pip install apache-airflow[celery,postgres]
               airflow db init
-              airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com
+              airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email nkgxgongxi@gmail.com
               airflow webserver -D
               airflow scheduler -D
               EOF
