@@ -44,27 +44,39 @@ def get_news_data(sources:list, start_date:str, end_date:str, topic:str):
             source_str = sources[0]
     else:
         source_str = ','.join(sources)
+
+    response = newsapi.get_everything(q=topic,
+                                        sources=source_str,
+                                        from_param=start_date,
+                                        to=end_date,
+                                        language='en',
+                                        sort_by='relevancy',
+                                        page=1)
     
-    print(source_str)
+    number_of_records = response['totalResults']
+    page_size = 100
+
+    total_pages = (number_of_records // page_size) + 1
     
-    all_articles = newsapi.get_everything(q=topic,
-                                            sources=source_str,
-                                            from_param=start_date,
-                                            to=end_date,
-                                            language='en',
-                                            sort_by='relevancy',
-                                            page=1)
+    all_articles = []
+    for page in range(1, total_pages + 1):
+        response = newsapi.get_everything(q=topic,
+                                                sources=source_str,
+                                                from_param=start_date,
+                                                to=end_date,
+                                                language='en',
+                                                sort_by='relevancy',
+                                                page=page)
+        
+        all_articles.extend(response['articles'])
     
     # Handle the situation where there is no data found.
-    number_of_news = all_articles['totalResults']
-    print("{number_of_news} news found from provided sources with related topic.".format(number_of_news=number_of_news))
-    if  number_of_news > 0:    
-        news_data = all_articles['articles']
+    
+    print("{number_of_news} news found from provided sources with related topic.".format(number_of_news=number_of_records))
+    if  number_of_records > 0:    
+        return all_articles
     else:
         return None
-    
-    # TODO: How to get data with pagination (second page or so).
-    return news_data
     
 
 # /v2/top-headlines/sources
@@ -90,7 +102,7 @@ def ingest_news_sources(snowflake_ops:Snowflake_Ops):
                            )
     
 def ingest_news_data(snowflake_ops:Snowflake_Ops):
-    news_data = get_news_data(sources=['bloomberg', 'the-wall-street-journal', 'techcrunch', 'fortune', 'the-next-web', 'cnn', 'abc-news', 'google-news'], topic='AI', start_date='2025-02-25', end_date='2025-03-03')
+    news_data = get_news_data(sources=['bloomberg', 'the-wall-street-journal', 'techcrunch', 'fortune', 'the-next-web', 'cnn', 'google-news'], topic='AI', start_date='2025-02-25', end_date='2025-03-03')
     if news_data != None: 
         print(len(news_data))
         news_df = pd.DataFrame(news_data)
