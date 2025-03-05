@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: news_sources
+  - name: news_sources_migration_test
     description: "Load News Sources data from an external database."
     columns:
       - name: id
@@ -27,7 +27,6 @@ models:
         description: "The date/time the data was updated."
 
 sources:
-
   - name: news_api_temp_source
     description: 'An external source of data created by myself.'
     database: hol_db

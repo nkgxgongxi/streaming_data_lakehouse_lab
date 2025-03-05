@@ -32,9 +32,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_snowflake_test:
     # Config indicated by + and applies to all files under models/example/
+    # Test changing the materialisation from table to view for example models. (Note: first model will retain as a table as it's overriden in model config macro.)
     jaffle_shop:
       +schema: jaffle_shop
-      +materialized: table
+      +materialized: view
 
     financial_source_data:
       +schema: financial_info
