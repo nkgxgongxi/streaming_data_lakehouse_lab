@@ -10,9 +10,7 @@ from retrieve_config import retrieve_config_info
 config = retrieve_config_info("config.ini")
 my_api_key = config.get("api", "key")
 
-# print(f"API Key: {my_api_key}")
-
-# Init
+# Initialisation
 newsapi = NewsApiClient(api_key=my_api_key)
 
 # /v2/top-headlines
@@ -20,6 +18,7 @@ newsapi = NewsApiClient(api_key=my_api_key)
 #                                           sources='bbc-news',
 #                                           language='en')
 
+# Reference:https://newsapi.org/docs/endpoints/everything
 def get_news_data(sources:list, start_date:str, end_date:str, topic:str):
     """
         This functions calls NesAPI to retrieve news details based on given search criteria. 
@@ -82,6 +81,7 @@ def get_news_data(sources:list, start_date:str, end_date:str, topic:str):
 # /v2/top-headlines/sources
 # define a function to read all sources into a dataframe
 def get_news_sources_data():
+    
     sources = newsapi.get_sources()
 
     # returned value is a dict

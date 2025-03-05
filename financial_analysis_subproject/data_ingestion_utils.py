@@ -95,9 +95,11 @@ class Snowflake_Ops():
             cursor.execute(delete_records_query)
         
         # Normalise the data format of last updated at field
+        # Reference: https://stackoverflow.com/questions/19738169/convert-column-of-date-objects-in-pandas-dataframe-to-strings
         df['LAST_UPDATED_AT'] = df['LAST_UPDATED_AT'].dt.strftime('%Y-%m-%dT%H:%M:%S')
         
         # Load the DataFrame into Snowflake
+        # Reference: https://docs.snowflake.com/en/developer-guide/python-connector/python-connector-pandas
         success, nchunks, nrows, _ = write_pandas(
             conn=conn,
             df=df,
