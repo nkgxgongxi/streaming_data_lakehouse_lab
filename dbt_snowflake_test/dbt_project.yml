@@ -40,3 +40,17 @@ models:
     financial_source_data:
       +schema: financial_info
       +materialized: table
+
+seeds:
+  # Use needs to explicitly declare the project for this seeds configuration.
+  dbt_snowflake_test:
+    country_code_mapping:
+      # Correct the data types of country code related columns in target database.
+      # Another learning note: Once table is created for seeds file, even running dbt seed again will only overwrite the data, but not update the table data types.
+      +column_types: 
+        COUNTRY_CODE: varchar(10)
+        region_code: varchar(10)
+        sub_region_code: varchar(10)
+        intermediate_region_code: varchar(10)
+
+
