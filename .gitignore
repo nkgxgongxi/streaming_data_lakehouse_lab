@@ -3,3 +3,4 @@ LICENSE.txt
 *.hcl
 *.exe
 *.tfstate.backup
+airflow-plan
