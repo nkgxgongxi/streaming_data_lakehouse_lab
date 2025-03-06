@@ -1,4 +1,5 @@
 # test adding a package to my dbt environment
 packages:
+  # https://hub.getdbt.com/dbt-labs/dbt_utils/latest/
   - package: dbt-labs/dbt_utils
     version: 1.3.0
