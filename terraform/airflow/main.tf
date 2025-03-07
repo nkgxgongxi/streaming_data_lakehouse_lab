@@ -39,9 +39,12 @@ resource "aws_instance" "airflow" {
               airflow db init
               airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email nkgxgongxi@gmail.com
 
-              sed -i 's/^load_examples = True/load_examples = False/' /opt/airflow_home/airflow.cfg
+              sudo sed -i 's/^load_examples = True/load_examples = False/' /opt/airflow_home/airflow.cfg
               airflow webserver -D
               airflow scheduler -D
+
+              sudo mkdir -p /opt/airflow_home/dags
+              sudo chown -R ec2-user:ec2-user /opt/airflow_home/dags
               EOF
   
    tags = {
