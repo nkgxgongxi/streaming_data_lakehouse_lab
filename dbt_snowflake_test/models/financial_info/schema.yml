@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: news_clean
+    description: "Clean up raw data in NEWS Table."
+    columns:
+      - name: title
+        description: "The title of each piece of news."
+        data_tests:
+          - unique
+          - not_null
+      - name: content
+        description: "News content."
+        data_tests:
+          - not_null
+      - name: author
+        description: "Author of each news record."
+        data_tests:
+          - udf_not_null 
+      - name: url
+        description: "URL of the news."
+      - name: source_id
+        description: "Source of the news, which should be a value in News Source table."
+      - name: topic
+        description: "Topic of the news."
+      - name: publishedat
+        description: "Published date time of the news."
+      - name: loaded_by
+        description: "ETL user"
+      - name: last_updated_at
+        description: "The date/time the data was updated."
+
+sources:
+  - name: news_data_raw
+    description: 'Raw news data.'
+    database: raw
+    schema: financial_info
+    tables:
+      - name: news
+        description: 'This is a raw table of News I loaded through API calls.'

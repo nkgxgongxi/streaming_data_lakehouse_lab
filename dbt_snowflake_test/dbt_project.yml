@@ -41,6 +41,10 @@ models:
       +schema: financial_info
       +materialized: table
 
+    financial_info:
+      + schema: financial_info
+      + materialized: table
+
 seeds:
   # Use needs to explicitly declare the project for this seeds configuration.
   dbt_snowflake_test:
