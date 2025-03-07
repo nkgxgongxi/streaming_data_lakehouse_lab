@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from airflow.providers.snowflake.operators.snowflake import SnowflakeSqlApiOperator
 from datetime import datetime
 
 default_args = {
@@ -15,7 +15,7 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    run_query = SnowflakeOperator(
+    run_query = SnowflakeSqlApiOperator(
         task_id='run_query',
         sql='SELECT COUNT(*) FROM NEWS',
         snowflake_conn_id='snowflake-test-conn',
