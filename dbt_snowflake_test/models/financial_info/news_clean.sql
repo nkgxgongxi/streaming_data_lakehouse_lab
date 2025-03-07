@@ -15,6 +15,7 @@ final as (
            loaded_by,
            last_updated_at 
     from news_raw
+    where author is not null and author != ''
 )
 
 select * from final
