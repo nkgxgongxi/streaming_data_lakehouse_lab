@@ -21,6 +21,7 @@ resource "aws_instance" "airflow" {
               #!/bin/bash
               sudo yum update -y
               sudo yum install -y python3-pip
+              sudo yum install git
               sudo mkdir -p /opt/airflow_project
               sudo chown -R ec2-user:ec2-user /opt/airflow_project
               cd /opt/airflow_project
@@ -36,15 +37,19 @@ resource "aws_instance" "airflow" {
               echo 'export AIRFLOW_HOME=/opt/airflow_home' >> ~/.bashrc
               source ~/.bashrc
 
-              airflow db init
+              cd /opt
+              sudo git clone https://nkgxgongxi:${var.github_access_key}@github.com/nkgxgongxi/streaming_data_lakehouse_lab.git
+              sudo chown ec2-user:ec2-user /opt/streaming_data_lakehouse_lab
+              
+              sudo ln -s /opt/streaming_data_lakehouse_lab/airflow_dags/ /opt/airflow_home/dags
+
+              airflow db migrate
               airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email nkgxgongxi@gmail.com
 
               sudo sed -i 's/^load_examples = True/load_examples = False/' /opt/airflow_home/airflow.cfg
               airflow webserver -D
               airflow scheduler -D
 
-              sudo mkdir -p /opt/airflow_home/dags
-              sudo chown -R ec2-user:ec2-user /opt/airflow_home/dags
               EOF
   
    tags = {
