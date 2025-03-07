@@ -5,3 +5,9 @@
 
 ##### To load static data from seeds directory.
 `dbt seed`
+
+##### To run dbt model builds (can add -m <model_name> to only run one model build)
+`dbt run`
+
+##### To test dbt models (can add -m <model_name> to only run one model test)
+`dbt test`
