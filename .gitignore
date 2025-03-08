@@ -4,3 +4,4 @@ LICENSE.txt
 *.exe
 *.tfstate.backup
 airflow-plan
+variables.tf
