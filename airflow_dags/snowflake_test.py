@@ -1,5 +1,7 @@
 from airflow import DAG
-from airflow.providers.snowflake.operators.snowflake import SnowflakeSqlApiOperator
+from utils.news_api_test import ingest_news_sources
+from utils.data_ingestion_utils import Snowflake_Ops
+from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 
 default_args = {
@@ -9,16 +11,16 @@ default_args = {
 }
 
 with DAG(
-    'snowflake_operator_dag',
+    dag_id = 'snowflake_operator_dag',
     default_args=default_args,
     schedule_interval='@daily',
     catchup=False,
 ) as dag:
 
-    run_query = SnowflakeSqlApiOperator(
-        task_id='run_query',
-        sql='SELECT COUNT(*) FROM NEWS',
-        snowflake_conn_id='snowflake-test-conn',
+    ingest_news_sources_task = PythonOperator(
+        task_id='Ingest_News_Source',
+        python_callable = ingest_news_sources,
+        op_kwargs={'snowflake_ops':Snowflake_Ops(config_location='/opt/airflow_home/')}
     )
 
-    run_query
+    ingest_news_sources_task

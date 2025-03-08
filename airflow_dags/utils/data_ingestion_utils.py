@@ -10,6 +10,7 @@ class Snowflake_Ops():
 
     def __init__(self):
         # Initialise a Snowflake connection using configuration information
+        self.config_location = None
         self.config = None
         self.conn = None
         # self.conn = self.establish_snowflake_connection(self.set_snowflake_config())
@@ -19,7 +20,7 @@ class Snowflake_Ops():
         return self.config
     
     def set_snowflake_config(self):
-        config_val = retrieve_config_info("config.ini")
+        config_val = retrieve_config_info("config.ini", self.config_location)
         self.config = config_val['snowflake']
     
 
