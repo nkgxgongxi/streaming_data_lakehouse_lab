@@ -11,7 +11,6 @@ module "airflow" {
   vpc_id = module.networking.vpc_id
   subnet_id = module.networking.subnet_id
   security_group_id = module.networking.security_group_id
-  key_name = "kafka-ec2-key"
 }
 
 # Uncomment when you want to deploy Kafka
