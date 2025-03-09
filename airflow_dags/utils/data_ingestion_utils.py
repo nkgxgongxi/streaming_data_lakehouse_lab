@@ -115,3 +115,28 @@ class Snowflake_Ops():
     
     def close_snowflake_connection(self):
         self.conn.close()
+
+
+def test_snowflake_conn():
+    new_sf_obj = Snowflake_Ops()
+    new_sf_obj.config_location='E:/Study_And_Work/coding_practice/streaming_data_lakehouse_lab/airflow_dags/utils'
+    new_sf_obj.establish_snowflake_connection()
+
+    cursor = new_sf_obj.conn.cursor()
+
+    try:
+        cursor.execute(f"SELECT COUNT(*) FROM COUNTRY_CODE_MAPPING")
+        result = cursor.fetchall()
+    except Exception as e:
+        if "does not exist" in str(e):
+            result = -1
+        else:
+            raise e
+    
+    print(result)
+    new_sf_obj.close_snowflake_connection()
+    
+
+if __name__ == '__main__':
+    test_snowflake_conn()
+    
