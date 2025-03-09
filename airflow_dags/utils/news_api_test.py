@@ -7,7 +7,7 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-from data_ingestion_utils import Snowflake_Ops
+from utils.data_ingestion_utils import Snowflake_Ops
 from utils.retrieve_config import retrieve_config_info
 
 
