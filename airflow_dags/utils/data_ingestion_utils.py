@@ -1,9 +1,14 @@
 import pandas as pd
 import datetime as dt
+import os
+import sys
 from snowflake.connector import connect
 from snowflake.connector.pandas_tools import write_pandas
 
-from retrieve_config import retrieve_config_info
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+from utils.retrieve_config import retrieve_config_info
 
 
 class Snowflake_Ops():

@@ -1,9 +1,14 @@
 from newsapi import NewsApiClient
-import configparser
-import os
 import pandas as pd
+import os
+import sys
+
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
 from data_ingestion_utils import Snowflake_Ops
-from retrieve_config import retrieve_config_info
+from utils.retrieve_config import retrieve_config_info
 
 
 # Read the API key
