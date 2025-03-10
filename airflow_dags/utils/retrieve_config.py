@@ -19,6 +19,6 @@ def retrieve_config_info(config_file_name:str, config_abs_path:str = None):
     return config
 
 if __name__ == '__main__':
-    config = retrieve_config_info(config_file_name="config.ini", config_abs_path="E:/Study_And_Work/coding_practice/streaming_data_lakehouse_lab/airflow_dags/utils")
+    config = retrieve_config_info(config_file_name="config.ini", config_abs_path="/opt/airflow_home")
 
     print(config['snowflake'])

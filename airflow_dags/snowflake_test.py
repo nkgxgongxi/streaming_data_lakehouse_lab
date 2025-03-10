@@ -1,30 +1,30 @@
-from airflow import DAG
-from utils.news_api_test import ingest_news_sources
-from utils.data_ingestion_utils import Snowflake_Ops
-from airflow.operators.python_operator import PythonOperator
+from airflow.decorators  import dag, task
 from datetime import datetime
-
-test_snowflake_ops = Snowflake_Ops()
-test_snowflake_ops.config_location = '/opt/airflow_home'
-test_snowflake_ops.establish_snowflake_connection(target_database='RAW', target_schema='FINANCIAL_INFO')
+from utils.data_ingestion_utils import Snowflake_Ops
+from utils.news_api_test import ingest_news_sources
 
 default_args = {
-    'owner': 'airflow',
-    'start_date': datetime(2025, 3, 7),
-    'retries': 1,
+    "owner": "airflow",
+    "depends_on_past": False,
+    "start_date": datetime(2025, 3, 10),
+    "retries": 1,
 }
 
-with DAG(
-    dag_id = 'snowflake_operator_dag',
-    default_args=default_args,
-    schedule_interval='@daily',
-    catchup=False,
-) as dag:
+@dag(
+        schedule="@daily", 
+        default_args=default_args, 
+        catchup=False,
+        tags=["example"],
+ )
+def snowflake_test_dag():
+    @task
+    def ingest_news_sources_task():
+        print("First, initialising a Snowflake Object.")
+        test_snowflake_ops = Snowflake_Ops()
+        test_snowflake_ops.config_location = '/opt/airflow_home'
+        test_snowflake_ops.establish_snowflake_connection(target_database='RAW', target_schema='FINANCIAL_INFO')
+        ingest_news_sources(snowflake_ops=test_snowflake_ops)
 
-    ingest_news_sources_task = PythonOperator(
-        task_id='Ingest_News_Source',
-        python_callable = ingest_news_sources,
-        op_kwargs={'snowflake_ops':test_snowflake_ops}
-    )
+    ingest_news_sources_task()
 
-    ingest_news_sources_task
+snowflake_test_dag()
