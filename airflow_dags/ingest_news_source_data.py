@@ -1,7 +1,7 @@
 from airflow.decorators  import dag, task
 from datetime import datetime
 from utils.data_ingestion_utils import Snowflake_Ops
-from utils.news_api_test import ingest_news_sources
+from airflow_dags.utils.news_api_consumption import ingest_news_sources
 
 default_args = {
     "owner": "airflow",
@@ -11,12 +11,12 @@ default_args = {
 }
 
 @dag(
-        schedule="@daily", 
+        schedule="@weekly", 
         default_args=default_args, 
         catchup=False,
         tags=["example"],
  )
-def snowflake_test_dag():
+def ingest_news_sources_dag():
     @task
     def ingest_news_sources_task():
         print("First, initialising a Snowflake Object.")
@@ -27,4 +27,4 @@ def snowflake_test_dag():
 
     ingest_news_sources_task()
 
-snowflake_test_dag()
+ingest_news_sources_dag()

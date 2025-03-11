@@ -2,6 +2,7 @@ from newsapi import NewsApiClient
 import pandas as pd
 import os
 import sys
+from datetime import datetime, timedelta
 
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -106,20 +107,30 @@ def ingest_news_sources(snowflake_ops:Snowflake_Ops):
                            mode="overwrite"
                            )
     
-def ingest_news_data(snowflake_ops:Snowflake_Ops):
-    news_data = get_news_data(sources=['bloomberg', 'the-wall-street-journal', 'techcrunch', 'fortune', 'the-next-web', 'cnn', 'google-news'], topic='AI', start_date='2025-02-25', end_date='2025-03-03')
+def ingest_news_data(snowflake_ops:Snowflake_Ops, sources:list=None, topic:str=None, start_date:str=None, end_date:str=None):
+    if not sources:
+        sources = ['bloomberg', 'the-wall-street-journal', 'techcrunch', 'fortune', 'the-next-web', 'cnn', 'google-news']
+
+    if not topic:
+        topic = 'AI'
+
+    if not start_date or not end_date:
+        end_date = datetime.today().strftime("%Y-%m-%d")
+        start_date = (datetime.today() - timedelta(5)).strftime("%Y-%m-%d")
+
+    news_data = get_news_data(sources=sources, topic=topic, start_date=start_date, end_date=end_date)
     if news_data != None: 
         print(len(news_data))
         news_df = pd.DataFrame(news_data)
         print(news_df.columns)
         news_df[['source_id', 'source_name']] = pd.json_normalize(news_df['source'].values.tolist())
-        news_df['topic'] = 'AI'
+        news_df['topic'] = topic
         news_df = news_df[['title', 'content', 'author', 'url', 'source_id', 'topic', 'publishedAt']]
 
         news_df = snowflake_ops.cleanup_source_data(news_df)
         snowflake_ops.load_data_to_snowflake(news_df, 
                            table_name="NEWS", 
-                           mode="overwrite"
+                           mode="append"
                            )
 
 
