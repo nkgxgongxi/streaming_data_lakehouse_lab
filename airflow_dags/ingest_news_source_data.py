@@ -1,7 +1,7 @@
 from airflow.decorators  import dag, task
 from datetime import datetime
 from utils.data_ingestion_utils import Snowflake_Ops
-from airflow_dags.utils.news_api_consumption import ingest_news_sources
+from utils.news_api_consumption import ingest_news_sources
 
 default_args = {
     "owner": "airflow",
