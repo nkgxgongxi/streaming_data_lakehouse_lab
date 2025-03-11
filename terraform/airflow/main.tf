@@ -30,6 +30,8 @@ resource "aws_instance" "airflow" {
               
               pip install apache-airflow[celery,postgres]
               pip install pandas
+              pip install snowflake-connector-python
+              pip install configparser
 
               sudo mkdir -p /opt/airflow_home
               sudo chown -R ec2-user:ec2-user /opt/airflow_home
@@ -44,7 +46,7 @@ resource "aws_instance" "airflow" {
               sudo ln -s /opt/streaming_data_lakehouse_lab/airflow_dags/ /opt/airflow_home/dags
 
               airflow db migrate
-              airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email nkgxgongxi@gmail.com
+              airflow users create --username admin --password ${var.airflow_user_password} --firstname Admin --lastname User --role Admin --email nkgxgongxi@gmail.com
 
               sudo sed -i 's/^load_examples = True/load_examples = False/' /opt/airflow_home/airflow.cfg
               airflow webserver -D
