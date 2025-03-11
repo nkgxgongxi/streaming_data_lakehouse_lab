@@ -11,7 +11,7 @@ default_args = {
 }
 
 @dag(
-        schedule="@daily", 
+        schedule="hourly", 
         default_args=default_args, 
         catchup=False,
         tags=["example"],
@@ -26,7 +26,7 @@ def ingest_news_dag():
         end_date = datetime.today().strftime("%Y-%m-%d")
         start_date = (datetime.today() - timedelta(1)).strftime("%Y-%m-%d")
         sources = ['bloomberg', 'the-wall-street-journal', 'techcrunch', 'fortune', 'the-next-web', 'cnn', 'google-news']
-        for topic in ['AI', 'US Economy', 'Trump', 'China', 'World']:
+        for topic in ['AI', 'US Economy', 'President Trump', 'China', 'World', 'Semiconductor', 'US Stock Market', 'LLM', 'Deepseek', 'GenAI']:
             print("Now processing topic: {0}".format(topic))
             
             ingest_news_data(snowflake_ops=test_snowflake_ops, sources=sources, topic=topic, start_date=start_date, end_date=end_date)
