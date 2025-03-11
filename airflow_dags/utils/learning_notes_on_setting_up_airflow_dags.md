@@ -24,4 +24,5 @@ This document summarise my recent learning notes on setting up Airflow DAGs in a
     - `airflow dag list` and `airflow dag list-import-errors` helped me find out which dags succesfully registerd and if not, what are the errors behind the scenes. The beauty of these commands is that you don't rely on the UI. 
     - I sense that using cli to conduct test and tweak my codes is an advanced feature I need to pick up.
 4. If a DAG job is stuck at retry/running status, you can go to DAG --> DAG runs and manually update its status to "Failed" to avoid waiting.
+5. How to cut/paste code snippet via `vim`. Press `V` then select everything you want to cut, then press `d` and move to the line you want to paste and then press `P`.
 
