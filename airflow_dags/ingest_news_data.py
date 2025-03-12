@@ -6,12 +6,13 @@ from utils.news_api_consumption import ingest_news_data
 default_args = {
     "owner": "airflow",
     "depends_on_past": False,
-    "start_date": datetime(2025, 3, 11),
+    "start_date": datetime(2025, 3, 11, 21, 0, 0),
     "retries": 1,
+    "retry_delay": timedelta(minutes=10)
 }
 
 @dag(
-        schedule="hourly", 
+        schedule="@hourly", 
         default_args=default_args, 
         catchup=False,
         tags=["example"],
