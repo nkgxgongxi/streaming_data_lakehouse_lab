@@ -140,7 +140,14 @@ if __name__ == '__main__':
     testSnowOps = Snowflake_Ops()
     testSnowOps.establish_snowflake_connection(target_database='RAW', target_schema='FINANCIAL_INFO')
     # ingest_news_sources(testSnowOps)
-    ingest_news_data(testSnowOps)
+    end_date = (datetime.today() - timedelta(2)).strftime("%Y-%m-%d")
+    start_date = (datetime.today() - timedelta(4)).strftime("%Y-%m-%d")
+    sources = ['bloomberg', 'the-wall-street-journal', 'techcrunch', 'fortune', 'the-next-web', 'cnn', 'google-news']
+    for topic in ['AI']:#, 'US Economy', 'President Trump', 'China', 'World', 'Semiconductor', 'US Stock Market', 'LLM', 'Deepseek', 'GenAI']:
+        print("Now processing topic: {0}".format(topic))
+        
+        ingest_news_data(snowflake_ops=testSnowOps, sources=sources, topic=topic, start_date=start_date, end_date=end_date)
+    # ingest_news_data(testSnowOps)
     testSnowOps.close_snowflake_connection()
 
 

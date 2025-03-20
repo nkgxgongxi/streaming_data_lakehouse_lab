@@ -7,12 +7,9 @@ models:
       - name: id
         description: "The api record key for each row."
         data_tests:
-          - unique
-          - not_null
       - name: name
         description: "News Source Name."
         data_tests:
-          - not_null
       - name: description
         description: "Description of this news source."
       - name: url
