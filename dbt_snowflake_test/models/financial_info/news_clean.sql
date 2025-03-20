@@ -7,7 +7,7 @@
 with news_raw as (
     
     select * from {{ source('news_data_raw', 'news') }}
-    where last_updated_at >= dateadd(day, -5, current_date)
+    where last_updated_at >= dateadd(day, -10, current_date)
 
 ),
 unique_news_raw as (
@@ -40,7 +40,7 @@ final as (
     where
     -- notes: The else block is necessary because if the table doesn't exist, only having "if block" will result in an incomplete query after compilation.
     {% if is_incremental() -%}
-        last_updated_at > nvl((select max(last_updated_at) from {{ this }}), dateadd(day, -5, current_date))
+        last_updated_at > nvl((select max(last_updated_at) from {{ this }}), dateadd(day, -10, current_date))
     {%- else -%}
         1 = 1
     {%- endif %}
