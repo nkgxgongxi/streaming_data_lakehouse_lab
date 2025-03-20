@@ -12,7 +12,7 @@ default_args = {
 }
 
 @dag(
-        schedule="@hourly", 
+        schedule="@daily", 
         default_args=default_args, 
         catchup=False,
         tags=["example"],
