@@ -6,10 +6,8 @@ models:
     columns:
       - name: id
         description: "The api record key for each row."
-        data_tests:
       - name: name
         description: "News Source Name."
-        data_tests:
       - name: description
         description: "Description of this news source."
       - name: url
